@@ -7,7 +7,7 @@ const correctNumber = document.querySelector('.number')
 const scoreContainer = document.querySelector('.right')
 
 const getRandomNumber = () => {
-    return Math.floor(Math.random() * 19 + 1)
+    return Math.floor(Math.random() * 20 + 1)
 }
 let randomNumber = getRandomNumber()
 
