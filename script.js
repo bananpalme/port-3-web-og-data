@@ -1,5 +1,3 @@
-'use strict'
-
 const getCheckBtn = document.querySelector('.check')
 const score = document.querySelector('.score')
 const highscore = document.querySelector('.highscore')
@@ -9,6 +7,7 @@ const scoreContainer = document.querySelector('.right')
 const getRandomNumber = () => {
     return Math.floor(Math.random() * 20 + 1)
 }
+
 let randomNumber = getRandomNumber()
 
 score.innerHTML = '0'
@@ -24,12 +23,33 @@ scoreContainer.append(historyParagraph)
 
 let guessedNumbers = []
 
+const showConfetti = () => {
+    const confettiGif = document.createElement('img')
+    confettiGif.src = 'https://cdn.pixabay.com/animation/2024/05/02/07/43/07-43-00-535_512.gif'
+    confettiGif.style.width = '100vw'
+    confettiGif.style.height = '100vh'
+    confettiGif.style.position = 'fixed';
+    confettiGif.style.top = '0';
+
+    document.body.append(confettiGif)
+
+    setTimeout(() => {
+        document.body.removeChild(confettiGif)
+    }, 5000)
+}
+
+let correctAnswerAudio = new Audio('./assets/answer-correct.mp3')
+
+let wrongAnswerAudio = new Audio('./assets/sad-bomboclat.mp3')
+
 const checkValue = () => {
     const getInput = document.querySelector('.guess')
 
-    if (/^\d+$/.test(getInput.value)) {
+    if (getInput.value !== '' && !isNaN(Number(getInput.value))) {
         if (Number(getInput.value) === Number(randomNumber)) {
             score.innerHTML++
+            showConfetti()
+            correctAnswerAudio.play()
             if (highscore.innerHTML === '') {
                 highscore.innerHTML = score.innerHTML
             }
@@ -42,7 +62,9 @@ const checkValue = () => {
             correctNumber.innerHTML = randomNumber
         } else if (Number(getInput.value) >= 0 && Number(getInput.value) <= 20){
             score.innerHTML++
-            addToHistory(getInput.value)
+            wrongAnswerAudio.play()
+            guessedNumbers.push(getInput.value)
+            historyParagraph.textContent = `🤔 Gættede: ${guessedNumbers}`
             getInput.value = ' '
         } else {
             alert('Only numbers between 0 and 20!')
@@ -54,6 +76,7 @@ const checkValue = () => {
 }
 
 getCheckBtn.addEventListener('click', checkValue)
+
 
 let againBtn = document.querySelector('.again')
 
@@ -69,11 +92,5 @@ const tryAgain = () => {
 }
 
 againBtn.addEventListener('click', tryAgain)
-
-const addToHistory = (guess) => {
-    guessedNumbers.push(guess)
-    historyParagraph.textContent = `🤔 Gættede: ${guessedNumbers}`
-}
-
 
 
