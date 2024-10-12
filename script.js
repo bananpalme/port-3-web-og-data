@@ -39,8 +39,10 @@ const showConfetti = () => {
 }
 
 let correctAnswerAudio = new Audio('./assets/answer-correct.mp3')
+correctAnswerAudio.volume = 0.1
 
 let wrongAnswerAudio = new Audio('./assets/sad-bomboclat.mp3')
+wrongAnswerAudio.volume = 0.05
 
 const checkValue = () => {
     const getInput = document.querySelector('.guess')
